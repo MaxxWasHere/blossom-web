@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Code, MessageCircle, Video, ScanText, Wrench } from "lucide-react";
 import { APP_VERSION, EXTERNAL, NAV_GROUPS, SITE_NAME, TAGLINE } from "@/lib/site";
+import { withBasePath } from "@/lib/utils";
 
 export function Footer() {
   return (
@@ -26,7 +27,7 @@ export function Footer() {
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
             <Image
-              src="/blossom.png"
+              src={withBasePath("/blossom.png")}
               alt="Blossom logo"
               width={30}
               height={30}

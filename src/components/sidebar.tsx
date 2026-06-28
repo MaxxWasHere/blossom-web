@@ -1,14 +1,15 @@
 import Image from "next/image";
 import { APP_VERSION, EXTERNAL } from "@/lib/site";
+import { withBasePath } from "@/lib/utils";
 import { SidebarNav } from "./sidebar-nav";
 
 export function Sidebar() {
   return (
     <aside className="blsm-sidebar" aria-label="Primary">
       <div className="blsm-sidebar-brand">
-        {/* next/image with unoptimized handles basePath automatically */}
+        {/* unoptimized next/image does not inherit basePath, so prefix manually */}
         <Image
-          src="/blossom.png"
+          src={withBasePath("/blossom.png")}
           alt="Blossom logo"
           width={34}
           height={34}
@@ -34,4 +35,3 @@ export function Sidebar() {
     </aside>
   );
 }
-

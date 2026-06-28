@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AppShell } from "@/components/app-shell";
 import { APP_VERSION, DESCRIPTION, SITE_TITLE } from "@/lib/site";
 import { THEMES } from "@/lib/themes";
+import { withBasePath } from "@/lib/utils";
 
 const SITE_URL = "https://maxxwashere.github.io/blossom-web";
 const THEME_IDS = THEMES.map((t) => t.id);
@@ -53,10 +54,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/blossom.png", type: "image/png" },
+      { url: withBasePath("/favicon.ico"), sizes: "any" },
+      { url: withBasePath("/blossom.png"), type: "image/png" },
     ],
-    apple: "/blossom.png",
+    apple: withBasePath("/blossom.png"),
   },
   robots: { index: true, follow: true },
   category: "technology",

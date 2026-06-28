@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Download } from "lucide-react";
 import { APP_VERSION, EXTERNAL } from "@/lib/site";
+import { withBasePath } from "@/lib/utils";
 import { ThemeSwitcher } from "./theme-switcher";
 import { MobileNav } from "./mobile-nav";
 
@@ -30,7 +31,7 @@ export function Titlebar() {
         }}
       >
         <Image
-          src="/blossom.png"
+          src={withBasePath("/blossom.png")}
           alt=""
           width={22}
           height={22}
