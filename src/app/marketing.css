@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Marketing site styles (loaded after globals.css).
+   The app-shell in globals.css locked the document (html/body overflow hidden,
+   fixed .blsm-app-root, .blsm-page filled the window pane). This file turns
+   that into a normal scrolling marketing site: a sticky top nav, a centered
+   page container, and a rich footer. globals.css app-shell/sidebar/window
+   rules are left in place so the Showcase mock app window still renders.
+   ========================================================================== */
+
+/* Let the document scroll naturally (overrides globals.css html/body lock). */
+html,
+body {
+  height: auto;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Centered, generous marketing page container (overrides the app-pane .blsm-page). */
+.blsm-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+
+/* Changelog anchors should clear the sticky nav. */
+.cl-version {
+  scroll-margin-top: 84px;
+}
+
+/* ==========================================================================
+   Sticky top navigation
+   ========================================================================== */
+
+.blsm-site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: color-mix(in srgb, var(--bg-root) 72%, transparent);
+  backdrop-filter: saturate(1.25) blur(16px);
+  -webkit-backdrop-filter: saturate(1.25) blur(16px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.blsm-site-nav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  min-height: 64px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.blsm-site-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+.blsm-site-nav-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border-accent);
+}
+.blsm-site-nav-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+}
+.blsm-site-nav-version {
+  font-size: 10.5px;
+  padding: 2px 8px;
+}
+.blsm-site-nav-links {
+  flex: 1;
+  justify-content: center;
+  gap: 2px;
+}
+.blsm-site-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 13px;
+  border-radius: var(--m3-shape-corner-full);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.blsm-site-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.2, 1.1);
+}
+.blsm-site-nav-link:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+.blsm-site-nav-link.is-active {
+  color: var(--text-primary);
+}
+.blsm-site-nav-link.is-active::after {
+  transform: scaleX(1);
+}
+.blsm-site-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.blsm-site-nav-actions-desktop {
+  align-items: center;
+  gap: 10px;
+}
+.blsm-site-nav-cta {
+  min-height: 38px;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   Marketing main + footer
+   ========================================================================== */
+
+.blsm-site-main {
+  width: 100%;
+}
+
+.blsm-site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg-sidebar);
+  margin-top: 48px;
+}
+.blsm-site-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 52px 22px 36px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 2fr);
+  gap: 44px;
+}
+.blsm-site-footer-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+.blsm-site-footer-wordmark {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.blsm-site-footer-blurb {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0 0 16px;
+}
+.blsm-site-footer-social {
+  display: flex;
+  gap: 8px;
+}
+.blsm-site-footer-social a {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.blsm-site-footer-social a:hover {
+  color: var(--accent);
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+}
+.blsm-site-footer-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.blsm-site-footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.blsm-site-footer-col-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.blsm-site-footer-col a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.16s ease;
+}
+.blsm-site-footer-col a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+.blsm-site-footer-bottom {
+  border-top: 1px solid var(--border);
+}
+.blsm-site-footer-bottom-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.blsm-site-footer-note {
+  max-width: 760px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .blsm-page {
+    padding: 34px 16px 64px;
+  }
+}
+@media (max-width: 860px) {
+  .blsm-site-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .blsm-site-footer-cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .blsm-site-footer-cols {
+    grid-template-columns: 1fr;
+  }
+  .blsm-site-nav-version {
+    display: none;
+  }
+  .blsm-site-nav-inner {
+    min-height: 58px;
+    padding: 0 14px;
+    gap: 10px;
+  }
+}

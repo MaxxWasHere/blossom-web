@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./marketing.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AppShell } from "@/components/app-shell";
+import { SiteShell } from "@/components/site-shell";
 import { APP_VERSION, DESCRIPTION, SITE_TITLE } from "@/lib/site";
 import { THEMES } from "@/lib/themes";
 import { withBasePath } from "@/lib/utils";
@@ -88,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           disableTransitionOnChange
           storageKey="blossom-web-theme"
         >
-          <AppShell>{children}</AppShell>
+          <SiteShell>{children}</SiteShell>
         </ThemeProvider>
       </body>
     </html>
