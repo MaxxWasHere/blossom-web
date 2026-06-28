@@ -298,10 +298,17 @@
   border-color: var(--border);
 }
 
+/* The simulated app window is fixed to the viewport; the document itself
+   never scrolls. Only the inner main-content pane scrolls where needed. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 html {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--border-hover) 50%, transparent) transparent;
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -314,7 +321,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  min-height: 100vh;
 }
 
 ::selection {
@@ -382,8 +388,29 @@ body {
 }
 
 /* ==========================================================================
-   App shell - window frame + titlebar + sidebar (mirrors the Blossom app)
+   App shell - fixed simulated window frame + titlebar + flush sidebar
+   (mirrors the Blossom desktop app: the page never scrolls, the window is
+   fixed to the viewport, and only the inner main pane scrolls on overflow.)
    ========================================================================== */
+
+/* Viewport-sized centered container that hosts the simulated window. */
+.blsm-app-root {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  background: var(--bg-root);
+  overflow: hidden;
+}
+
+/* The simulated window itself: fixed aspect-ish box, clipped, never scrolls. */
+.blsm-app-window {
+  width: 100%;
+  max-width: 1320px;
+  height: 100%;
+  max-height: 880px;
+}
 
 .blsm-window {
   display: flex;
@@ -393,6 +420,21 @@ body {
   border-radius: var(--m3-shape-corner-lg);
   overflow: hidden;
   box-shadow: var(--m3-elevation-3);
+}
+
+/* Quick accent wash on theme switch (GSAP drives autoAlpha). */
+.blsm-theme-flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0;
+  background: radial-gradient(
+    120% 120% at 50% 50%,
+    color-mix(in srgb, var(--accent) 22%, transparent),
+    transparent 70%
+  );
+  will-change: opacity;
 }
 
 .blsm-titlebar {
@@ -466,7 +508,7 @@ body {
   background: var(--bg-main);
 }
 
-/* Sidebar */
+/* Sidebar - docked flush-left, full height of the window content area. */
 .blsm-sidebar {
   width: 224px;
   min-width: 224px;
@@ -474,11 +516,7 @@ body {
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 36px;
-  align-self: flex-start;
-  max-height: calc(100vh - 36px);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .blsm-sidebar-brand {
@@ -513,12 +551,29 @@ body {
 }
 
 .blsm-sidebar-nav {
+  position: relative;
   padding: 12px 8px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   overflow-y: auto;
   flex: 1;
+}
+
+/* GSAP-driven sliding selection rail (single element, moved via x/y). */
+.blsm-sidebar-rail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 26px;
+  border-radius: 0 999px 999px 0;
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 42%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
 }
 
 .blsm-sidebar-section-label {
@@ -601,7 +656,8 @@ body {
   transition: opacity 0.22s ease;
   pointer-events: none;
 }
-/* Left-edge selection glow rail */
+/* The per-item ::after rail is intentionally kept hidden; the sliding
+   .blsm-sidebar-rail element (driven by GSAP) is the single selection rail. */
 .blsm-sidebar-item::after {
   content: "";
   position: absolute;
@@ -614,7 +670,6 @@ body {
   box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 42%, transparent);
   transform: translateY(-50%);
   opacity: 0;
-  transition: height 0.28s cubic-bezier(0.2, 0.9, 0.2, 1.1), opacity 0.22s ease;
   pointer-events: none;
 }
 .blsm-sidebar-item:hover {
@@ -638,8 +693,8 @@ body {
   opacity: 1;
 }
 .blsm-sidebar-item.is-active::after {
-  height: 58%;
-  opacity: 1;
+  height: 0;
+  opacity: 0;
 }
 .blsm-sidebar-item.is-active .blsm-sidebar-item-icon {
   color: var(--accent);
@@ -663,12 +718,14 @@ body {
   color: var(--accent);
 }
 
-/* Main content area inside the window */
+/* Main content area inside the window - the only pane that scrolls. */
 .blsm-main {
   flex: 1;
   min-width: 0;
   background: var(--bg-main);
   overflow-y: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
 .blsm-page {
   padding: 26px 30px 34px;
@@ -685,14 +742,14 @@ body {
   border-top: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border));
   background: var(--bg-card);
   box-shadow: var(--m3-elevation-1);
-  transition: border-color 0.18s ease, background 0.18s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.22s ease;
   overflow: hidden;
 }
+/* Hover lift is driven by GSAP (y). Only color/shadow changes remain in CSS. */
 .blsm-card-hover:hover {
   border-color: var(--border-hover);
   border-top-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 6%, var(--bg-card));
-  transform: translateY(-2px);
   box-shadow: var(--m3-elevation-2);
 }
 .blsm-card-header {
@@ -1184,7 +1241,7 @@ code, kbd, pre {
 
 /* Changelog rendering */
 .cl-version {
-  scroll-margin-top: 90px;
+  scroll-margin-top: 24px;
 }
 .cl-group-label {
   font-size: 12px;
@@ -1225,6 +1282,370 @@ code, kbd, pre {
 }
 
 /* ==========================================================================
+   Home dashboard - compact, fits the clipped window without scrolling
+   ========================================================================== */
+
+.blsm-home {
+  padding: 18px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+
+.blsm-home-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.blsm-stat-cell {
+  flex: 1 1 130px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border-radius: var(--m3-shape-corner-md);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  min-width: 0;
+}
+.blsm-stat-cell-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--border-accent);
+  background: var(--md-sys-color-primary-container);
+  color: var(--accent);
+}
+.blsm-stat-cell-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.blsm-stat-cell-value {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.blsm-stat-cell-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.blsm-home-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.blsm-home-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 2px 0;
+  position: relative;
+}
+.blsm-home-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.4vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0;
+}
+.blsm-home-tagline {
+  font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 560px;
+  margin: 0;
+}
+.blsm-home-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.blsm-home-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 2px;
+}
+.blsm-home-pills .blsm-chip {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.blsm-home-widgets {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* Now-playing widget */
+.blsm-np {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.blsm-np-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.blsm-np-art {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 40%, #6d8bff));
+  display: grid;
+  place-items: center;
+  color: var(--text-on-accent);
+  box-shadow: var(--shadow-glow);
+}
+.blsm-np-meta {
+  min-width: 0;
+  flex: 1;
+}
+.blsm-np-title {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.blsm-np-artist {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.blsm-np-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+.blsm-np-progress-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  animation: blsm-np-fill 28s linear infinite;
+}
+@keyframes blsm-np-fill {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+.blsm-np-transport {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+}
+.blsm-np-play {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+
+/* Schedule peek widget */
+.blsm-sched {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.blsm-sched-next {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: var(--m3-shape-corner-sm);
+  border: 1px solid var(--border-accent);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+.blsm-sched-next-icon {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.blsm-sched-next-meta {
+  min-width: 0;
+  flex: 1;
+  line-height: 1.2;
+}
+.blsm-sched-next-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.blsm-sched-next-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.blsm-sched-next-countdown {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.blsm-sched-timeline {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+.blsm-sched-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-align: center;
+  min-width: 0;
+}
+.blsm-sched-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--border-hover);
+}
+.blsm-sched-step.is-now .blsm-sched-dot {
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+}
+.blsm-sched-step.is-next .blsm-sched-dot {
+  background: var(--accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.blsm-sched-step-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+.blsm-sched-step-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+/* Animated background preset selector */
+.blsm-bg-thumb-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.blsm-bg-thumb {
+  position: relative;
+  height: 58px;
+  border-radius: var(--m3-shape-corner-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: var(--bg-input);
+  transition: border-color 0.18s ease, box-shadow 0.2s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, opacity;
+}
+.blsm-bg-thumb:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+.blsm-bg-thumb.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+.blsm-bg-thumb-bg {
+  position: absolute;
+  inset: 0;
+}
+.blsm-bg-thumb-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--bg-root) 82%, transparent));
+}
+
+/* Mini preset backgrounds inside thumbnails */
+.blsm-bg-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.blsm-bg-mesh .blsm-mesh-blob {
+  width: 54px;
+  height: 54px;
+}
+.blsm-bg-stars {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-root);
+}
+.blsm-bg-stars span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--text-primary);
+  animation: blsm-twinkle 2.4s ease-in-out infinite;
+}
+@keyframes blsm-twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.95; }
+}
+.blsm-bg-bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg-root);
+}
+.blsm-bg-bubbles span {
+  position: absolute;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  animation: blsm-bubble 3.2s ease-in-out infinite;
+}
+@keyframes blsm-bubble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+/* GSAP entrance targets */
+.blsm-hero-el,
+.blsm-widget {
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
    Reduced motion - freeze / disable all transforms & animations
    ========================================================================== */
 
@@ -1241,7 +1662,10 @@ code, kbd, pre {
     scroll-behavior: auto !important;
   }
   .blsm-aurora,
-  .blsm-mesh-blob {
+  .blsm-mesh-blob,
+  .blsm-np-progress-fill,
+  .blsm-bg-stars span,
+  .blsm-bg-bubbles span {
     animation: none !important;
   }
   .blsm-sidebar-item,
@@ -1254,7 +1678,8 @@ code, kbd, pre {
   .btn-secondary:hover,
   .blsm-pill:hover,
   .blsm-chip:hover,
-  .blsm-swatch:hover {
+  .blsm-swatch:hover,
+  .blsm-bg-thumb:hover {
     transform: none !important;
   }
 }
@@ -1267,6 +1692,17 @@ code, kbd, pre {
   display: none;
 }
 @media (max-width: 1023px) {
+  .blsm-app-root {
+    padding: 0;
+  }
+  .blsm-app-window {
+    max-width: none;
+    max-height: none;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+  }
   .blsm-sidebar {
     display: none;
   }
@@ -1276,6 +1712,9 @@ code, kbd, pre {
   .blsm-mobile-only {
     display: inline-flex;
   }
+  .blsm-home-grid {
+    grid-template-columns: 1fr;
+  }
   .blsm-page {
     padding: 18px 16px 26px;
   }
@@ -1283,4 +1722,3 @@ code, kbd, pre {
     padding: 44px 0;
   }
 }
-
