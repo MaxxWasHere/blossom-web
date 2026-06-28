@@ -388,28 +388,27 @@ body {
 }
 
 /* ==========================================================================
-   App shell - fixed simulated window frame + titlebar + flush sidebar
-   (mirrors the Blossom desktop app: the page never scrolls, the window is
-   fixed to the viewport, and only the inner main pane scrolls on overflow.)
+   App shell - full-bleed, edge-to-edge (the shell IS the page)
+   The page never scrolls; only the inner main-content pane scrolls where
+   content genuinely overflows (e.g. Changelog). No floating window frame.
    ========================================================================== */
 
-/* Viewport-sized centered container that hosts the simulated window. */
+/* Full-bleed root: fills the viewport edge-to-edge, no outer margin/gap. */
 .blsm-app-root {
   position: fixed;
   inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 14px;
   background: var(--bg-root);
   overflow: hidden;
 }
 
-/* The simulated window itself: fixed aspect-ish box, clipped, never scrolls. */
-.blsm-app-window {
+/* Full-bleed shell: fills the root, header on top + sidebar/main below. */
+.blsm-app-shell {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 1320px;
   height: 100%;
-  max-height: 880px;
+  background: var(--bg-root);
+  overflow: hidden;
 }
 
 .blsm-window {
@@ -437,68 +436,41 @@ body {
   will-change: opacity;
 }
 
-.blsm-titlebar {
+/* Clean full-width top header (replaces the mock window titlebar). */
+.blsm-header {
   position: relative;
   display: flex;
   align-items: center;
-  height: 36px;
-  min-height: 36px;
-  padding: 0 0 0 14px;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 18px 0 16px;
   background: var(--bg-sidebar);
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 8%, transparent);
   user-select: none;
+  z-index: 20;
 }
-
-.blsm-titlebar-dots {
+.blsm-header-brand {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding-right: 4px;
-}
-.blsm-titlebar-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  display: inline-block;
-}
-.blsm-titlebar-dot.minimize {
-  background: #f0bd5a;
-}
-.blsm-titlebar-dot.maximize {
-  background: #5ac05a;
-}
-.blsm-titlebar-dot.close {
-  background: #e85b5b;
-}
-
-.blsm-titlebar-title {
-  margin-left: 10px;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 500;
-  pointer-events: none;
-}
-.blsm-titlebar-spacer {
-  flex: 1;
-}
-.blsm-titlebar-windowbtn {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: transparent;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.14s ease, color 0.14s ease, transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.blsm-titlebar-windowbtn:hover {
-  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  gap: 10px;
+  text-decoration: none;
   color: var(--text-primary);
 }
-.blsm-titlebar-windowbtn:active {
-  transform: scale(0.9);
+.blsm-header-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1px solid var(--border-accent);
+}
+.blsm-header-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+.blsm-header-spacer {
+  flex: 1;
 }
 
 .blsm-app-layout {
@@ -1692,17 +1664,6 @@ code, kbd, pre {
   display: none;
 }
 @media (max-width: 1023px) {
-  .blsm-app-root {
-    padding: 0;
-  }
-  .blsm-app-window {
-    max-width: none;
-    max-height: none;
-    height: 100dvh;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-  }
   .blsm-sidebar {
     display: none;
   }

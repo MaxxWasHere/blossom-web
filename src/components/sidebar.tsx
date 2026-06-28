@@ -1,28 +1,14 @@
-import Image from "next/image";
-import { APP_VERSION, EXTERNAL } from "@/lib/site";
-import { withBasePath } from "@/lib/utils";
+import { EXTERNAL } from "@/lib/site";
 import { SidebarNav } from "./sidebar-nav";
 
+/**
+ * Flush-left, full-height sidebar. Brand + version live in the top Header now,
+ * so the sidebar is just the nav + a compact footer (license/repo/Discord +
+ * disclaimer). Keeps the inset tonal-lane look and the GSAP sliding rail.
+ */
 export function Sidebar() {
   return (
     <aside className="blsm-sidebar" aria-label="Primary">
-      <div className="blsm-sidebar-brand">
-        {/* unoptimized next/image does not inherit basePath, so prefix manually */}
-        <Image
-          src={withBasePath("/blossom.png")}
-          alt="Blossom logo"
-          width={34}
-          height={34}
-          className="blsm-sidebar-brand-mark"
-          unoptimized
-          priority
-        />
-        <div>
-          <h1>Blossom</h1>
-          <div className="version">v{APP_VERSION} stable</div>
-        </div>
-      </div>
-
       <SidebarNav />
 
       <div className="blsm-sidebar-footer">
