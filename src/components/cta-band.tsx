@@ -16,7 +16,7 @@ export function CtaBand({
   return (
     <section className="blsm-cta-section">
       <div className="blsm-container">
-        <div className="blsm-cta-band">
+        <div className="blsm-cta-band blsm-reveal">
           <AuroraBackground />
           <div className="blsm-cta-band-inner">
             <h2 className="m3-headline blsm-cta-title">{title}</h2>

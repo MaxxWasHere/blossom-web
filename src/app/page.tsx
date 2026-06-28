@@ -119,7 +119,7 @@ export default function HomePage() {
       <section className="blsm-section blsm-cred-section">
         <div className="blsm-container blsm-cred-strip">
           {STATS.map((s) => (
-            <div key={s.label} className="blsm-stat-cell">
+            <div key={s.label} className="blsm-stat-cell blsm-reveal">
               <span className="blsm-stat-cell-icon">
                 <s.icon size={15} />
               </span>
@@ -135,7 +135,7 @@ export default function HomePage() {
       {/* What it does */}
       <section className="blsm-section">
         <div className="blsm-container">
-          <div className="blsm-section-head">
+          <div className="blsm-section-head blsm-reveal">
             <div className="blsm-eyebrow">What it does</div>
             <h2 className="m3-headline blsm-section-title">A macro that feels good to use</h2>
             <p className="blsm-section-sub">
@@ -145,7 +145,7 @@ export default function HomePage() {
           </div>
           <div className="blsm-feature-grid">
             {FEATURES.map((f) => (
-              <Card key={f.title} hover className="blsm-feature-card">
+              <Card key={f.title} hover className="blsm-feature-card blsm-reveal">
                 <CardHeader>
                   <CardIcon>
                     <f.icon size={18} />
@@ -164,7 +164,7 @@ export default function HomePage() {
       {/* Showcase teaser */}
       <section className="blsm-section">
         <div className="blsm-container">
-          <div className="blsm-section-head">
+          <div className="blsm-section-head blsm-reveal">
             <div className="blsm-eyebrow">Showcase</div>
             <h2 className="m3-headline blsm-section-title">A peek at the app</h2>
             <p className="blsm-section-sub">
@@ -172,10 +172,10 @@ export default function HomePage() {
               tokens and components as the real app. It follows your chosen theme.
             </p>
           </div>
-          <div className="blsm-showcase-teaser">
+          <div className="blsm-showcase-teaser blsm-reveal">
             <MockAppWindow />
           </div>
-          <div className="blsm-showcase-teaser-cta">
+          <div className="blsm-showcase-teaser-cta blsm-reveal">
             <Link className="btn btn-secondary" href="/showcase">
               Explore the showcase <ArrowRight size={15} />
             </Link>
@@ -186,7 +186,7 @@ export default function HomePage() {
       {/* Themes preview */}
       <section className="blsm-section">
         <div className="blsm-container">
-          <div className="blsm-section-head">
+          <div className="blsm-section-head blsm-reveal">
             <div className="blsm-eyebrow">Themes</div>
             <h2 className="m3-headline blsm-section-title">Eight built-in themes</h2>
             <p className="blsm-section-sub">
@@ -194,7 +194,9 @@ export default function HomePage() {
               Appearance tab.
             </p>
           </div>
-          <ThemeGrid />
+          <div className="blsm-reveal">
+            <ThemeGrid />
+          </div>
         </div>
       </section>
 

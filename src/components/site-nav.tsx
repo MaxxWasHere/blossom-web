@@ -1,11 +1,13 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Download } from "lucide-react";
 import { ALL_NAV_ITEMS, APP_VERSION, EXTERNAL } from "@/lib/site";
 import { cn, withBasePath } from "@/lib/utils";
+import { gsap, useGSAP } from "@/lib/gsap";
 import { ThemeSwitcher } from "./theme-switcher";
 import { MobileNav } from "./mobile-nav";
 
@@ -17,13 +19,48 @@ function norm(p: string) {
  * Sticky, full-width marketing top nav (replaces the app-shell sidebar/header).
  * Blossom brand + version left, horizontal page links center, theme switcher +
  * a prominent Download CTA right. On narrow screens the links collapse into the
- * MobileNav drawer (hamburger). Translucent blurred M3 surface.
+ * MobileNav drawer (hamburger). Translucent blurred M3 surface. Nav links get a
+ * subtle GSAP hover lift (gated on prefers-reduced-motion).
  */
 export function SiteNav() {
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    (_context, contextSafe) => {
+      const header = headerRef.current;
+      if (!header || !contextSafe) return;
+      const cs = contextSafe;
+      const links = Array.from(header.querySelectorAll<HTMLElement>(".blsm-site-nav-link"));
+      const handlers: Array<[HTMLElement, () => void, () => void]> = [];
+      const mm = gsap.matchMedia();
+      mm.add({ reduceMotion: "(prefers-reduced-motion: reduce)" }, ({ conditions }) => {
+        if (!!conditions?.reduceMotion) return;
+        links.forEach((link) => {
+          const enter = cs(() =>
+            gsap.to(link, { y: -1, duration: 0.18, ease: "power2.out", overwrite: "auto" })
+          );
+          const leave = cs(() =>
+            gsap.to(link, { y: 0, duration: 0.22, ease: "power2.out", overwrite: "auto" })
+          );
+          link.addEventListener("pointerenter", enter);
+          link.addEventListener("pointerleave", leave);
+          handlers.push([link, enter, leave]);
+        });
+      });
+      return () => {
+        handlers.forEach(([link, enter, leave]) => {
+          link.removeEventListener("pointerenter", enter);
+          link.removeEventListener("pointerleave", leave);
+        });
+        mm.revert();
+      };
+    },
+    { scope: headerRef }
+  );
 
   return (
-    <header className="blsm-site-nav" data-blsm-nav>
+    <header className="blsm-site-nav" ref={headerRef}>
       <div className="blsm-site-nav-inner">
         <Link href="/" className="blsm-site-nav-brand" aria-label="Blossom home">
           <Image
