@@ -31,6 +31,14 @@ export function Sidebar() {
         <a href={EXTERNAL.appRepo} target="_blank" rel="noreferrer noopener">
           MaxxWasHere/Blossom
         </a>
+        {" &middot; "}
+        <a href={EXTERNAL.discord} target="_blank" rel="noreferrer noopener">
+          Discord
+        </a>
+        <br />
+        Independent fork. Not affiliated with Roblox.
+        <br />
+        &copy; {new Date().getFullYear()} MaxxWasHere
       </div>
     </aside>
   );

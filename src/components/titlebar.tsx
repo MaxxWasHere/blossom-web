@@ -8,10 +8,7 @@ import { MobileNav } from "./mobile-nav";
 
 export function Titlebar() {
   return (
-    <header
-      className="blsm-titlebar"
-      style={{ position: "sticky", top: 0, zIndex: 50, borderRadius: 0 }}
-    >
+    <header className="blsm-titlebar" style={{ borderRadius: 0 }}>
       <div className="blsm-titlebar-dots" aria-hidden="true">
         <span className="blsm-titlebar-dot close" />
         <span className="blsm-titlebar-dot minimize" />

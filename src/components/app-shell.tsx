@@ -1,35 +1,21 @@
 import { Titlebar } from "./titlebar";
 import { Sidebar } from "./sidebar";
-import { Footer } from "./footer";
 
+/**
+ * The whole site is rendered as a single simulated Blossom desktop window,
+ * fixed to the viewport and clipped (overflow: hidden). The document itself
+ * never scrolls; only the inner main-content pane scrolls where content
+ * genuinely overflows (e.g. Changelog). On narrow viewports the sidebar
+ * collapses and the window goes edge-to-edge (see globals.css).
+ */
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        background: "var(--bg-root)",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 1280,
-          margin: "0 auto",
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          minWidth: 0,
-        }}
-      >
+    <div className="blsm-app-root">
+      <div className="blsm-window blsm-app-window">
         <Titlebar />
-        <div style={{ display: "flex", alignItems: "flex-start", flex: 1, minWidth: 0 }}>
+        <div className="blsm-app-layout">
           <Sidebar />
-          <main style={{ flex: 1, minWidth: 0 }}>
-            {children}
-            <Footer />
-          </main>
+          <main className="blsm-main">{children}</main>
         </div>
       </div>
     </div>
