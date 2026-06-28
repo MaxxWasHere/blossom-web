@@ -1,5 +1,7 @@
 import { Titlebar } from "./titlebar";
 import { Sidebar } from "./sidebar";
+import { PageTransition } from "./page-transition";
+import { ThemeFlash } from "./theme-flash";
 
 /**
  * The whole site is rendered as a single simulated Blossom desktop window,
@@ -15,9 +17,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Titlebar />
         <div className="blsm-app-layout">
           <Sidebar />
-          <main className="blsm-main">{children}</main>
+          <main className="blsm-main">
+            <PageTransition>{children}</PageTransition>
+          </main>
         </div>
       </div>
+      <ThemeFlash />
     </div>
   );
 }
