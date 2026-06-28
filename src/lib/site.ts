@@ -20,7 +20,7 @@ export const EXTERNAL = {
   appRepo: "https://github.com/MaxxWasHere/Blossom",
   siteRepo: "https://github.com/MaxxWasHere/blossom-web",
   releases: "https://github.com/MaxxWasHere/Blossom/releases/latest",
-  discord: "https://discord.com/channels/1076700448070848532/1418608941361004716",
+  discord: "https://discord.gg/tv5T9uh2Ef",
   discordDevPortal: "https://discord.com/developers/applications",
   tesseract: "https://github.com/tesseract-ocr/tesseract/releases/latest",
   tutorialWindows: "https://youtu.be/dZzQytUMlCE",
