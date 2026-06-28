@@ -1219,6 +1219,10 @@ code, kbd, pre {
   border-radius: 999px;
   background: var(--accent-dim);
 }
+.cl-bullet-body {
+  min-width: 0;
+  flex: 1 1 auto;
+}
 
 /* ==========================================================================
    Reduced motion - freeze / disable all transforms & animations

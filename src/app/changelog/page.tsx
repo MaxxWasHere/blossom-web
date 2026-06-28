@@ -43,7 +43,11 @@ function renderBlock(b: Block) {
       </p>
     );
   }
-  return <div className="cl-bullet">{renderTokens(b.tokens)}</div>;
+  return (
+    <div className="cl-bullet">
+      <span className="cl-bullet-body">{renderTokens(b.tokens)}</span>
+    </div>
+  );
 }
 
 function versionSlug(version: string) {
