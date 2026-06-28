@@ -22,7 +22,7 @@ export default function ShowcasePage() {
           description="This is a static mock of the app's Macro Status page, rendered with the same Material 3 tokens, fonts, and app-shell components as the real Blossom. Pick a theme and the whole window updates instantly."
         />
 
-        <Card style={{ marginBottom: 22 }}>
+        <Card className="blsm-reveal" style={{ marginBottom: 22 }}>
           <CardHeader>
             <CardIcon>
               <Palette size={18} />
@@ -50,7 +50,7 @@ export default function ShowcasePage() {
         <h2 className="m3-headline" style={{ margin: "0 0 12px", fontSize: "1.3rem" }}>
           Macro Status
         </h2>
-        <div className="blsm-showcase-teaser" style={{ marginBottom: 0 }}>
+        <div className="blsm-showcase-teaser blsm-reveal" style={{ marginBottom: 0 }}>
           <MockAppWindow />
         </div>
 

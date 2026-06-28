@@ -455,3 +455,17 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Scroll progress indicator (GSAP ScrollTrigger scrubbed). */
+.blsm-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  z-index: 60;
+  pointer-events: none;
+  will-change: transform;
+}

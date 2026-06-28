@@ -160,7 +160,6 @@ export default function FeaturesPage() {
               <span style={{ color: "var(--text-muted)", fontSize: 13 }}>{group.blurb}</span>
             </div>
             <div
-              className="stagger"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
@@ -168,7 +167,7 @@ export default function FeaturesPage() {
               }}
             >
               {FEATURES.filter((f) => f.group === group.label).map((f) => (
-                <Card key={f.title} hover style={{ height: "100%" }}>
+                <Card key={f.title} hover className="blsm-reveal" style={{ height: "100%" }}>
                   <CardHeader>
                     <CardIcon>
                       <f.icon size={18} />
