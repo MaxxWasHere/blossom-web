@@ -169,7 +169,7 @@ export default function ChangelogPage() {
 
       <style>{`
         .cl-layout { grid-template-columns: minmax(160px, 210px) 1fr; }
-        .cl-nav { position: sticky; top: 48px; }
+        .cl-nav { position: sticky; top: 84px; }
         @media (max-width: 760px) {
           .cl-layout { grid-template-columns: 1fr !important; }
           .cl-nav { position: static !important; margin-bottom: 8px; }

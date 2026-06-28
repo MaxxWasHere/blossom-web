@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardBody, CardHeader, CardIcon, CardTitle } from "@/components/ui/card";
+import { CtaBand } from "@/components/cta-band";
 import {
   Music,
   Sparkles,
@@ -134,54 +135,64 @@ const GROUPS: { label: string; blurb: string }[] = [
 
 export default function FeaturesPage() {
   return (
-    <div className="blsm-page">
-      <PageHeader
-        eyebrow="Features"
-        title="Everything Blossom does"
-        description="A Roblox macro with a fishing mode, merchant auto-buy, and buff popping, wrapped in a Material 3 Expressive desktop app with a music player, animated backgrounds, and eight themes."
-      />
+    <>
+      <div className="blsm-page">
+        <PageHeader
+          eyebrow="Features"
+          title="Everything Blossom does"
+          description="A Roblox macro with a fishing mode, merchant auto-buy, and buff popping, wrapped in a Material 3 Expressive desktop app with a music player, animated backgrounds, and eight themes."
+        />
 
-      {GROUPS.map((group) => (
-        <section key={group.label} style={{ marginBottom: 36 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              gap: 12,
-              flexWrap: "wrap",
-              marginBottom: 14,
-            }}
-          >
-            <h2 className="m3-headline" style={{ margin: 0, fontSize: "1.4rem" }}>
-              {group.label}
-            </h2>
-            <span style={{ color: "var(--text-muted)", fontSize: 13 }}>{group.blurb}</span>
-          </div>
-          <div
-            className="stagger"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: 14,
-            }}
-          >
-            {FEATURES.filter((f) => f.group === group.label).map((f) => (
-              <Card key={f.title} hover style={{ height: "100%" }}>
-                <CardHeader>
-                  <CardIcon>
-                    <f.icon size={18} />
-                  </CardIcon>
-                  <CardTitle>{f.title}</CardTitle>
-                  {f.wip && <span className="blsm-wip-badge" style={{ marginLeft: "auto" }}>WIP</span>}
-                </CardHeader>
-                <CardBody>
-                  <p>{f.desc}</p>
-                </CardBody>
-              </Card>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
+        {GROUPS.map((group) => (
+          <section key={group.label} style={{ marginBottom: 36 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 12,
+                flexWrap: "wrap",
+                marginBottom: 14,
+              }}
+            >
+              <h2 className="m3-headline" style={{ margin: 0, fontSize: "1.4rem" }}>
+                {group.label}
+              </h2>
+              <span style={{ color: "var(--text-muted)", fontSize: 13 }}>{group.blurb}</span>
+            </div>
+            <div
+              className="stagger"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: 14,
+              }}
+            >
+              {FEATURES.filter((f) => f.group === group.label).map((f) => (
+                <Card key={f.title} hover style={{ height: "100%" }}>
+                  <CardHeader>
+                    <CardIcon>
+                      <f.icon size={18} />
+                    </CardIcon>
+                    <CardTitle>{f.title}</CardTitle>
+                    {f.wip && (
+                      <span className="blsm-wip-badge" style={{ marginLeft: "auto" }}>
+                        WIP
+                      </span>
+                    )}
+                  </CardHeader>
+                  <CardBody>
+                    <p>{f.desc}</p>
+                  </CardBody>
+                </Card>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      <CtaBand
+        title="Put Blossom to work"
+        sub="Fishing, merchant runs, and buff popping on a schedule — wrapped in a Material 3 app you will actually enjoy looking at."
+      />
+    </>
   );
 }

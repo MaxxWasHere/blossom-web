@@ -21,6 +21,7 @@ import { HomeEntrance } from "@/components/home-entrance";
 import { Card, CardBody, CardHeader, CardIcon, CardTitle } from "@/components/ui/card";
 import { MockAppWindow } from "@/components/mock-app-window";
 import { ThemeGrid } from "@/components/theme-grid";
+import { CtaBand } from "@/components/cta-band";
 import { APP_VERSION, EXTERNAL, TAGLINE } from "@/lib/site";
 
 const STATS = [
@@ -198,38 +199,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA band */}
-      <section className="blsm-cta-section">
-        <div className="blsm-container">
-          <div className="blsm-cta-band">
-            <AuroraBackground />
-            <div className="blsm-cta-band-inner">
-              <h2 className="m3-headline blsm-cta-title">Download Blossom</h2>
-              <p className="blsm-cta-sub">
-                Free and open source under Apache 2.0. Grab the bootstrapper and it stays current on
-                its own.
-              </p>
-              <div className="blsm-cta-row">
-                <a
-                  className="btn btn-accent blsm-hero-cta-primary"
-                  href={EXTERNAL.releases}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <Download size={18} /> Download for Windows
-                </a>
-                <a
-                  className="btn btn-secondary"
-                  href={EXTERNAL.appRepo}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  View on GitHub <ArrowRight size={15} />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CtaBand />
     </HomeEntrance>
   );
 }
