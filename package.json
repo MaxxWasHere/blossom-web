@@ -10,24 +10,26 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "clsx": "latest",
+    "gsap": "^3.15.0",
+    "lucide-react": "latest",
     "next": "latest",
+    "next-themes": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "lucide-react": "latest",
-    "next-themes": "latest",
-    "clsx": "latest",
     "tailwind-merge": "latest"
   },
   "devDependencies": {
-    "typescript": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "tailwindcss": "^3.4.17",
-    "postcss": "^8.4.49",
     "autoprefixer": "^10.4.20",
     "eslint": "^9",
-    "typescript-eslint": "latest",
-    "globals": "latest"
+    "globals": "latest",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "latest",
+    "typescript-eslint": "latest"
   }
 }
