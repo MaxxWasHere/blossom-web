@@ -1,0 +1,357 @@
+# Blossom 2.3.6
+
+## Fixed
+- Aura and reconnect detection: loosened the Roblox log regexes to the original's robust capture, so equipped-aura and reconnect-success events aren't missed when the RPC field order differs or `smallImage` is absent.
+- Biome Selector (WIP): the OCR-engine prompt now says "Windows OCR" instead of "Tesseract", and a dead confirm/cancel OCR guard was removed.
+- Core: removed unreachable dead code in the interruptible sleep helper.
+
+## Macro
+- Fishing + merchant teleporter: when the teleporter fires mid fishing cycle, the macro now walks back to the dock and resumes fishing instead of clicking the fish button while still in Limbo and eventually force-rejoining.
+- Merchant auto-buy: restored the original ~3.35s post-purchase dialogue hold so multi-item buys finish before the next slot is clicked.
+- Merchant pre-scan: name detection is again an 8-click + 4.25s dialogue hold instead of 16 rapid clicks.
+- Merchant cooldown: a failed/no-shop OCR no longer triggers the full merchant cooldown, so the next eligible cycle retries promptly.
+- Glitched buff auto-pop: each potion is now used once (not 3×); priority potions (Xyz → Warp → Heavenly II → Oblivion) pop first; Heavenly/Oblivion keep the original per-potion settle wait (shortened when a Warp is queued).
+- Fishing counter: catch and sell counters now increment only when the minigame bar was actually present, eliminating empty sell walks from false bites.
+
+## Discord
+- Merchant shop-ping dedup restored — per-merchant shop notifications no longer spam.
+
+## Licensing & updates
+- Stable **2.3.6** — the built-in updater on the stable channel offers this release; beta builds stay on their own track.
+
+# Blossom 2.3.5
+
+## New
+- Music player — open it from the new **Music** sidebar category, which shows the player as a full in-app page (everything fits inside: now-playing, transport, seek/volume/speed, a scrolling playlist and the add-track section). Add tracks by pasting a web URL or browsing a local audio file (mp3, wav, ogg, m4a, flac…), then play/pause, seek, skip, shuffle and repeat. Adjust volume, mute, and playback speed (0.5×–2×), reorder or remove tracks. The page opens/closes with spring scale/fade motion, the sidebar selection animates like the other categories, and the player closes when you pick another category (audio keeps playing in the background). Closed by default on launch; your playlist, volume, speed, loop, shuffle and last track save to your config and restore when you reopen the player (no auto-play on launch; local files keep their path in config, not a data URL).
+- Animated background — Appearance has a new **Animated background** card with live wallpaper presets (Aurora, Mesh, Stars, Bubbles), plus a **Custom media** preset that uses your own video, gif or image — paste a web URL or **Browse** a local file (local media is streamed back through the app's server, so large videos work without base64). Opacity, blur, dim and speed sliders tune the look; speed controls video playback rate. The background sits behind cards, the toolbar, inputs and sidebar items, so most surfaces stay solid and text stays readable; it freezes to a static frame (and videos pause) when Reduce motion is on. Off by default.
+
+## UI
+- Expressive motion everywhere — inputs, selects, checkboxes, chips, badges, secondary buttons, titlebar controls, list/table rows, links and code now share the same Material 3 Expressive easing: hover lifts, press springs, focus glows, and a checked pop. Dialogs, toasts, the command palette and the license gate get container-transform entrances; injected Blossom panels (Appearance, Animated background, Fishing, Merchant, Biome webhooks) fade-rise on mount. All gated on Appearance → Reduce motion.
+
+## Licensing & updates
+- Stable **2.3.5** — the built-in updater on the stable channel offers this release; beta builds stay on their own track.
+
+# Blossom 2.3.0
+
+## New
+- Schedule profiles — save multiple named automation plans (e.g. Weekday fish, Weekend grind) from the Macro Schedule tab. Pick a profile card to edit its timeline, or tap **Add profile** for a new plan. **Save** stores the profile and sets it as the active plan that runs when **Use schedule when macro runs** is on.
+- Macro Schedule tab — dedicated **Schedule** sidebar section with a horizontal timeline editor (time flows left→right). Drag blocks by the body to reorder, drag palette chips to add steps, resize left/right edges to remap duration, zoom the timeline with +/− or the slider, right-click for Properties / Duplicate / Delete, then enable **Use schedule when macro runs** and press Start.
+- Calibrations apply immediately — every Mark saves to your Blossom config and the macro reads updated points on the next tick without restarting.
+- Slower Collections clicks — Fishing page has a **Slower Collections clicks** toggle with an adjustable extra delay (ms). When on, Blossom opens and closes the Collections menu with a longer settle and click hold, and waits longer for the menu to appear — useful on slower PCs where the menu does not open in time during a fishing cycle. Off by default.
+
+## UI
+- Macro Schedule marked W.I.P. — the Schedule sidebar section, nav item, and tab page show clear experimental labeling (badge, subtitle, and warning banner). The planner is unfinished and may not run correctly when the macro is started; profiles and timeline editing are preview-only until the feature stabilizes.
+- Sidebar category lanes — grouped nav uses soft inset tonal rails with a left selection glow instead of bordered cards. Section labels and items are left-aligned within the optically centered column; gradient dividers separate MACROS, SETUP, and Schedule lanes.
+- Sidebar selection motion — switching categories now animates both the incoming and outgoing active item (spring select + eased deselect) within and across groups. Respects Reduce motion.
+- Horizontal Macro Schedule timeline — blocks span left→right with width proportional to step duration; the track scrolls inside its own container so the page never grows wider on zoom or hover. Zoom level persists in your config and local cache.
+- Material 3 design tokens — unified `--md-sys-color-*` roles, expressive typography scale, shape corners, and elevation across all built-in themes; sidebar, cards, command palette, update toasts, loading overlay, calibrations hub, and macro schedule use the same token surface (`--blsm-schedule-*`, `--blsm-overlay-*`, `--blsm-toast-*`).
+- Shared-axis navigation — page enters slide horizontally based on sidebar direction; overlay dialogs use container-transform enter; focus rings and ripples on cards, nav items, chips, and license buttons.
+- Schedule setup — first visit to the Macro Schedule tab shows a four-slide guide (timeline, drag-and-drop, duration & loop, enable & start). Replay from Settings & extras → Onboarding setup.
+- Schedule edit mode — selecting a block or opening Properties slides the sidebar into a step properties panel (activity, hours, minutes). Drag left or right edges on the timeline to remap time. Done or Escape to exit; clicking empty timeline deselects the step but keeps the panel open.
+- Progressive macro flow banners — setup steps on each macro tab update live: muted until done, accent pulse on the current step, checkmark when calibrations, modes, or running state is satisfied. Dismiss per page.
+- Beta activation gate — M3 dialog with **Get beta access on Discord** CTA, autofocus key field, full HWID copy, and morphing loader while activating. Welcome tour runs only after activation (no double stack on first beta launch).
+- Welcome setup (v5) — refreshed slides with Fishing Mode on the automation step, Biome Selector disabled as W.I.P., shared-axis step transitions, M3 dot progress, expressive feature cards, theme swatch grid, M3 switches, and polished footer buttons that stay visible on short windows. Replay from Settings & extras → Onboarding setup.
+- Material 3 Expressive loading — startup and the bootstrap launcher show morphing playful-geometry shapes (soft burst, cookie, pentagon, pill, sunny, oval) with spring rotation in a contained circle; update, runtime sync, and installs use a thick M3 expressive capsule bar (rounded track, accent fill with soft glow, spring-smoothed width).
+- Expressive progress bar — determinate downloads grow a rounded accent fill left→right with a subtle shimmer; indeterminate work shows a sliding accent segment inside the muted track. Each new download starts from 0%.
+- Pink Blush and Midnight Rose — Sakura and Midnight built-in themes now follow the M3 Expressive Pink Blush design system: Google Sans Flex typography, rose-tinted surfaces (#fff8f7 light / deep rose-black dark), blossom pink primary (#7b5455 / #ecbaba), soft ambient pink shadows, and larger M3 radii (4 / 12 / 16 / 24 px).
+- Google Sans Flex + JetBrains Mono — the app UI uses Google Sans Flex; inline code, paths, keybinds, and calibration coordinates use JetBrains Mono (Nerd Font).
+- Material 3 Expressive motion — emphasized easing, spring-like transitions, tonal card surfaces, state-layer feedback on buttons and nav, ripple touches, sidebar selection slide, card fade-rise on page change, toggle thumb overshoot, dropdown container reveal, and Start/Stop macro button color pulse. Respects Appearance → Reduce motion (`html.blsm-reduce-motion`).
+- Merchant tab layout — a three-step flow banner (Teleporter → Shop → Portable Crack), two-column settings grid, and a toggle for returning to Limbo after the teleporter run.
+- Macro tab (Automated Actions, Fishing, Macro Status) — Material 3 Expressive revamp: progressive three-step flow banners, quick-link chips (Calibrations, hotkeys, Fishing, Status), two-column card grids, expressive mode toggle tiles, live running pill on Status, pulsing module indicators, pill-shaped Start/Stop emphasis in the header, and staggered fade-rise on enter. Respects Reduce motion.
+- Macro Schedule icons — sidebar entry, profile cards, timeline blocks, palette chips, zoom controls, and setup tour use BlossomIcons (calendar, fishing, flask, cart, pause, grip-horizontal, plus, minus, layers, trash) instead of emoji.
+- Sidebar groups — left-aligned section labels and nav items inside soft inset tonal lanes (left accent rail, gradient section dividers) instead of bordered category cards. Command palette selection rows use the same rounded style.
+- Soft scrollbars — rounded, low-contrast thumbs across the app with smooth scrolling (respects Reduce motion). Macro Schedule timeline supports Ctrl+scroll (or Shift+scroll) to pan horizontally, and auto-scrolls when you drag blocks near the left or right edge.
+- Sidebar motion — selection spring pulse with paired deselect easing, hover slide, icon wiggle, left-edge glow on active items, M3 ripples on nav taps, and staggered lane enter when the sidebar loads. Respects Reduce motion.
+
+## Improved
+- Macro Schedule timeline — shorter step blocks, taller track area, floating drag ghost on the cursor, subtler reorder gap preview, and properties sidebar stays open until Done when you deselect or delete a step.
+- Macro Schedule profiles migrate automatically — existing single-timeline configs become a **Default** profile on first open; your steps and loop setting are preserved.
+- Removed the redundant macro setup intro — welcome setup and schedule tour remain; macro pages still show progressive flow banners.
+- Macro Schedule lives in its own **Schedule** sidebar category with a full-width horizontal timeline — block width reflects step duration, spring drag ghosts from the block body, left/right edge resize, zoom controls, and debounced save.
+- Header theme dropdown stays in sync with Appearance — picking a theme from the top-bar Macro Theme menu updates your saved Appearance settings instead of fighting the theme observer.
+- Potion switching scheduler — a brief settle gap between rotation crafts so merchant, quests, SC/BR, and other due UI tasks can run between potion slots instead of immediately re-queuing the next potion.
+- Diagnostic logging — session logs under `%LOCALAPPDATA%\Blossom\logs\` (`logs.txt` for INFO and above, `errors.log` for errors only). Files rotate when they grow large; uncaught exceptions and console output use the same format. Settings & extras → Logs & diagnostics shows the path, opens the folder in File Explorer, or copies the last ~300 lines for support.
+
+## Fixed
+- Macro Schedule drag — timeline blocks and palette chips show one full-opacity ghost under the cursor instead of stacking faint copies in the top-left corner.
+- Macro Schedule tab opens again — the virtual schedule page was hidden by the same `.fade-in` rule that suppresses React pages; sidebar hand-off no longer leaves dual `.active` items when switching tabs.
+- Loading overlay, bootstrap launcher, and update toasts respect your saved Appearance theme (`ui_theme`, accent, reduce motion) from config and local cache on startup.
+- Macro Schedule sidebar entry appears in the **Schedule** section after sidebar regrouping — injection retries after React and pywebview finish rendering.
+- Welcome setup slides no longer render an empty card body — the slide viewport keeps a minimum height so step content stays visible above the footer.
+- Fishing vision install progress — the bar fills while bytes download (determinate), runs continuously only while preparing or when size is unknown, and fully stops (unmounts) once installed instead of leaving the indeterminate animation running.
+- Macro no longer sits idle when Fishing Mode and Auto Potion Craft are both enabled — potion craft and other interval tasks run instead of the main loop spinning forever while the fishing worker refuses to start.
+- Welcome tour no longer stacks under the beta activation gate on first launch — intro waits for a valid license before mounting.
+- Macro Status live pill no longer flashes “running” on launch — the running indicator waits for the pywebview bridge and reads real macro state from the backend instead of guessing from header button CSS.
+- Header theme dropdown no longer freezes the app on close — the Appearance theme observer no longer fights React’s Macro Theme picker in an infinite `data-theme` loop, and expressive dropdown motion uses the native `is-open` class instead of a body-wide class observer.
+- Merchant teleporter now returns you to Limbo after shopping — when the teleporter round-trip finishes, Blossom uses Portable Crack from your inventory (search "crack", amount 1, Use). Turn it off under Merchant → Return to Limbo after merchant teleporter.
+- Fishing no longer spams the Roblox chat window — close-chat clicks are debounced, the redundant prep-loop close was removed, and the dock failsafe closes chat after its UI-nav key sequence (with proper delays between keys).
+- Page enter animations no longer re-stagger on every DOM refresh — stagger indices update only when the tab or card count changes.
+- Fishing vision installer card no longer flashes a failed or not-installed state while a download is still in progress.
+
+## Macro
+- Merchant teleporter uses the Coteab interact → dialogue → OCR → shop flow with click delays at 25% of the original Coteab timing (75% faster). Calibrations are unchanged.
+- Macro schedule overrides fishing, potion craft, and merchant teleporter toggles per step while the macro runs, then restores your manual toggles when you stop.
+- Removed the seasonal Easter / egg-path automation (collect Easter, egg OCR during fishing, egg playback multiplier). Those toggles no longer appear in the macro UI.
+- Fishing failsafe rejoin — when you are stuck at the dock with no bite for 60 seconds, Blossom retries the in-game UI path (backslash, S, A, Enter) once, then reconnects if it still cannot fish. Requires Auto Reconnect and Fishing failsafe rejoin in Misc settings.
+- Prep-phase stuck recovery — if collections, walking, or other pre-fishing steps hang for 90 seconds without progress, the same failsafe rejoin path runs so you are not left AFK in a menu overnight.
+- Auto Reconnect — when Roblox closes or disconnects mid-macro, Blossom terminates the client, joins your private server via your saved link, clicks your calibrated Reconnect Start button, and verifies you are in-game from Roblox logs. Calibrate Reconnect Start under Movements and set your Private Server link in Misc.
+- Forced sell after reconnect — a successful reconnect sets the next fishing cycle to run your sell trip first, so a disconnect with a full inventory does not leave you fishing without selling.
+
+## Licensing & updates
+- Stable **2.3.0** — the built-in updater on the stable channel offers this release; beta builds stay on their own track.
+
+# Blossom 2.2.3
+
+## Macro
+- Merchant auto-buy now presses your calibrated Set Max button and then Purchase, instead of clicking the amount field and typing a quantity. Calibrate Set Max in the merchant calibrations to use it (merchants that never use Max, like Rin, still fall back to a typed amount).
+- Merchant runs faster: shorter gaps between interact presses, dialogue clicks, shop open, and purchase, and a quicker default inventory click delay.
+- Character reset after camera align is faster (about 1.35s settle instead of 2s).
+- Inventory and other UI clicks (merchant, daily quests, BR/SC, biome selector, glitched buffs) are about 15% snappier. Potion crafting and fishing timings are unchanged.
+- Collections menu clicks during camera align and fishing prep jump to the button first, settle, then click in place so Roblox does not register a click while the cursor is still moving.
+- char_align.json and fishing.json ship in paths/ — char_align replay is keys-only (no mouse movement); fishing mode replays your recorded fishing.json route when present.
+
+## Improved
+- Path actions are steadier: obby, fishing, and other recorded paths now play char_align first and wait about 2 seconds after it so your character settles before walking. Eden is excluded because it uses its own entry alignment.
+
+## Licensing & updates
+- The bootstrapper always matches the version published on the source: on every start, `Blossom.exe` (stable) or `Blossom-beta.exe` (beta) syncs to the newest release for its channel, including a deliberate rollback, rather than only upgrading when the number goes up. Keep one shortcut — it stays current on its own.
+
+# Blossom 2.2.2
+
+## Fixed
+- Bootstrap launchers no longer crash on startup with “Too early to create variable: no default root window” — tkinter variables are created after the splash window exists.
+
+## Improved
+- Bootstrap launchers use a lightweight splash window with a custom title bar, logo, status text, and progress bar — faster cold start and a smaller `.exe` than the previous webview bootstrap, then auto-close when the main app is ready.
+- Bootstrap runtime sync shows per-component progress (OpenCV, WinOCR) instead of one combined step.
+
+## Discord
+- Biome and merchant webhook pings use Blossom embeds again — each includes your Private Server link as a Rejoin field, without hop-in reminder text.
+- Aura equip pings use the original Blossom aura embed again — rarity, player, optional screenshot, and pings — without a Private Server link or hop-in reminder text.
+
+# Blossom 2.2.1
+
+## New
+- Custom UI — one CSS file restyles the entire app. Under Appearance → Custom UI, pick a `.css` from `%LOCALAPPDATA%\Blossom\themes\`, copy `custom-ui.example.css` as a starter, edit tokens and selectors, then Refresh. Built-in themes stay available when Custom UI = None.
+- Four new built-in themes: OLED (true black for AMOLED panels), Sakura (warm light pink), Midnight (deep navy with indigo), and Forest (mossy greens with emerald).
+- Fixed-name launchers `Blossom.exe` (stable) and `Blossom-beta.exe` (beta) download the full app into `%LOCALAPPDATA%\Blossom\app\{channel}\` on first run and when a newer release exists, sync optional runtime components, then start the current version. Keep one shortcut forever.
+
+## UI
+- Appearance is simplified: JSON Theme studio and the separate “full custom CSS” path are merged into one Custom UI section. Built-in theme pickers dim while custom CSS is active.
+- Full-frame launch overlay while Blossom starts up, syncs optional runtime components, and downloads updates — branded spinner, status text, and a progress bar when the total size is known.
+- Light and Sakura themes use dark readable text on bright surfaces — sidebar labels, active nav, cards, and inputs no longer stay pale-on-pale.
+
+## Improved
+- Bootstrap launchers show a branded splash window with download progress for the app payload and runtime components, then close automatically once the main Blossom interface is ready.
+- Merchant, Eden, and biome-selector OCR now use Windows WinOCR instead of bundled Tesseract. The WinOCR Python bundle downloads with other runtime components; you also need the Windows OCR language pack (en-US) if it is not already installed.
+- Optional runtime dependencies (OpenCV and WinOCR) share one hash-verified manifest. The launcher and the app both sync missing or outdated components on startup without blocking launch.
+
+## Fixed
+- Packaged builds configure HTTPS certificate paths for activation and retry with a built-in fallback if the `requests` library cannot reach the server — fixes false “Can't reach the server” on PCs where activation worked in dev but not from the `.exe`.
+- WinOCR is no longer reported as missing when the runtime bundle is already downloaded and cached.
+- Starting the macro no longer shrinks a maximized Roblox window to 800×600 — foreground focus only restores the window when it was minimized.
+- Appearance settings save reliably again — config writes happen immediately instead of on a debounced timer that could miss a quick restart.
+- The desktop window is resizable again on Windows with a minimum size of 860×540 so the layout does not break.
+- The merchant OCR unavailable notice no longer shows on startup. It only appears when a feature that needs OCR runs without WinOCR or the Windows OCR language pack.
+- Biome Notifier table rows scroll inside their container again; the header spans the full width of its scroll area.
+
+## Discord
+- Biome notifier and merchant webhook pings now send only your Private Server link — no extra embed text or hop-in reminders.
+
+# Blossom 2.2.0
+
+## New
+- Custom UI — one CSS file restyles the entire app. Under Appearance → Custom UI, pick a `.css` from `%LOCALAPPDATA%\Blossom\themes\`, copy `custom-ui.example.css` as a starter, edit tokens and selectors, then Refresh. Built-in themes stay available when Custom UI = None.
+- Four new built-in themes: OLED (true black for AMOLED panels), Sakura (warm light pink), Midnight (deep navy with indigo), and Forest (mossy greens with emerald). Pick them under Appearance next to Pink, Dark, and Light.
+- Fixed-name launchers `Blossom.exe` (stable) and `Blossom-beta.exe` (beta) download the full app into `%LOCALAPPDATA%\Blossom\app\{channel}\` on first run and when a newer release exists, sync optional runtime components, then start the current version. Keep one shortcut forever.
+
+## UI
+- Appearance is simplified: JSON Theme studio and the separate “full custom CSS” path are merged into one Custom UI section. Built-in theme pickers dim while custom CSS is active; your saved built-in choice is kept as fallback.
+- Appearance → Custom UI now explains the difference between built-in themes (palette only) and a full CSS reskin (every existing surface). `custom-ui.example.css` includes a DOM selector map for sidebar, header, tabs, cards, modals, loading overlay, update toast, calibrations hub, biome webhooks, and more.
+- Custom CSS is sanitized on load (no `@import`, remote URLs, or scripts) and applies before the first frame paints, so startup no longer flashes the default look.
+- Full-frame launch overlay while Blossom starts up, syncs optional runtime components, and downloads updates or the fishing vision component — branded spinner, status text, and a progress bar when the total size is known.
+- Appearance card header shows brief “Saving…” / “Saved” feedback when theme or layout settings are written to config.
+- Light and Sakura themes use dark readable text on bright surfaces — sidebar labels, active nav, cards, and inputs no longer stay pale-on-pale.
+
+## Improved
+- Bootstrap launchers (`Blossom.exe` / `Blossom-beta.exe`) now show a branded splash window with download progress for the app payload and runtime components, then close automatically once the main Blossom interface is ready — no console window left open.
+- Bootstrap splash matches the in-app launch overlay more closely: pink aurora backdrop, Blossom logo, smoother progress animation, and inline error text instead of a blocking dialog.
+- Release build output separates launchers (`launchers/`) from versioned payload exes (`app/`) so uploads and local testing stay organized.
+- Custom UI CSS persists reliably across restarts: cached stylesheet text applies immediately on pre-paint, then reloads from disk when the Python bridge is ready.
+- Merchant, Eden, and biome-selector OCR now use Windows WinOCR instead of bundled Tesseract. The WinOCR Python bundle downloads with other runtime components; you also need the Windows OCR language pack (en-US) if it is not already installed.
+- Optional runtime dependencies (OpenCV and WinOCR) share one hash-verified manifest. The launcher and the app both sync missing or outdated components on startup without blocking launch.
+
+## Fixed
+- Bootstrap splash no longer crashes on launch when the loading spinner draws its track ring — tkinter only accepts solid 6-digit hex colors, not CSS-style alpha hex.
+- Beta activation no longer fails with “Can't reach the server” when the license worker has not deployed `/challenge` yet — Blossom falls back to the legacy activate flow and shows clearer timeout, SSL, or DNS errors when the network really is down.
+- Packaged beta builds configure HTTPS certificate paths for activation and retry with a built-in fallback if the `requests` library cannot reach the server — fixes false “Can't reach the server” on PCs where activation worked in dev but not from the `.exe`.
+- WinOCR is no longer reported as missing when the runtime bundle is already downloaded and cached; biome selector and status checks respect the synced manifest.
+- Starting the macro no longer shrinks a maximized Roblox window to 800×600 — foreground focus only restores the window when it was minimized.
+- Appearance settings (built-in theme, custom UI CSS, accent, scale, motion, and window size) save reliably again — config writes happen immediately instead of on a debounced timer that could miss a quick restart, custom CSS filenames are no longer cleared when the Python bridge is still starting, and a dedicated merge save avoids races with other config updates.
+- If you had a JSON custom theme selected, Blossom falls back to your saved built-in theme and shows a one-time notice — your `.json` files remain in the themes folder for reference.
+- The desktop window is resizable again on Windows. Edge and corner drag handles use native Win32 resize, with a minimum size of 860×540 so the layout does not break.
+- The launch overlay no longer blocks the main window indefinitely when running from source (`py run_local_ui.py`). Critical overlay CSS and startup dismissal logic were corrected, and heavy Python startup work no longer blocks the pywebview bridge while settings load.
+- The app no longer hangs on launch when starting the macro from source (`py run_local_ui.py`). Fishing screen capture no longer imports PyAutoGUI at startup, which could freeze the terminal indefinitely on some Windows setups.
+- The merchant OCR unavailable notice no longer shows on startup. It only appears when a feature that needs OCR runs without WinOCR or the Windows OCR language pack.
+- Biome Notifier table rows scroll inside their container again, so the rare-ping footnote no longer covers user ID fields on shorter windows.
+- Biome Notifier table header now spans the full width of its scroll area instead of appearing as a floating bar with gaps on the sides.
+
+## Licensing & updates
+- Beta licensing is hardened: activation uses one-time server challenges when available, signed tokens are bound to your build and machine, and the license file is stored with Windows DPAPI instead of plain JSON. If you update to a new beta build and see a machine mismatch, use `/resethwid` in Discord once.
+
+## Macro
+- Removed the “rare aura — hop in before they switch” pre-switch hop behavior from aura webhook copy.
+
+## Discord
+- Biome notifier and merchant webhook pings now send only your Private Server link — no extra embed text or hop-in reminders.
+
+# Blossom 2.1.0
+
+## New
+- Added Fishing Mode. Detects bite, plays reel minigame, walks to dock, optional sell. Enable it in the Macro tab and calibrate Fishing and Movements first.
+- Added a Macro Calibrations hub. One page for movement, merchant, potions, and fishing calibrations instead of separate cards.
+
+## Improved
+- Reworded in-app copy and docs: intro, credits, changelog, and README.
+- Credits and docs note the lineage. Blossom is a fork of Coteab (by Vapure), which came from the original Noteab biome macro.
+- Reorganized project files. Python code lives under `src/`, docs under `docs/`. Run the app with `py run_local_ui.py` from the repo root.
+- Trimmed README and docs for download-and-run setup. Release links, calibration, and webhooks are up front.
+- Smaller download and lighter install. The vision component used by fishing is no longer packed into the exe. It downloads once on first use of Fishing Mode and is cached in your local app data, which cuts the installer size by about 47 MB.
+- Fishing uses built-in walk paths to the dock and seller. Drop `fishing.json` or `fishing_sell.json` in your paths folder for custom routes. `fishing_playback_multiplier` sets replay speed.
+- The fishing vision component is verified by checksum before it is used, and any tampered or partial cached copy is re-downloaded. If it cannot be fetched, fishing falls back to NumPy and still works, just slightly slower.
+- Auto Merchant uses the original detection flow again: E key presses, dialogue clicks, Mari/Jester/Rin OCR, then buys from the item list.
+- Moved the top toolbar closer to the title bar.
+- Cards now highlight on hover across the whole card, not just the header strip.
+- Lighter idle cost. The macro now reuses its loaded settings and only re-reads the config file from disk when you actually change a setting, instead of re-parsing it several times a second while running.
+- Biome and aura detection now reuses the current Roblox log file and only rescans the logs folder every few seconds instead of every second, lowering background CPU and disk use while the app sits open.
+- Built-in update banner hiding now runs through the shared page watcher instead of its own always-on DOM observer, so the UI does less per-change work.
+
+## Fixed
+- Aura Detection webhooks work again on the Auras tab: rarity threshold, force-ping list, and Discord user ID match the original Noteab behavior, using Blossom embed styling.
+- Aurora and Eggland removed from the Biome Notifier list.
+- The Start / Stop header button no longer flickers. Hotkey labels and icons update without fighting the icon replacer.
+- The potion name field on Potion Crafting no longer bounces or loses focus while you type. The add panel stays put instead of being re-inserted every frame.
+- The packaged app no longer crashes on launch with a "Failed to execute script 'run_local_ui'" / "No such file or directory" error. The exe now starts straight into the Blossom window.
+- Calibrations no longer flash the old layout on load. The hub is the only version shown, on cold start and when switching tabs.
+- The "merchant OCR / Tesseract not found" notice no longer shows on startup. It only appears when a feature that needs OCR runs without it.
+- Legacy calibration accordions no longer flash before the hub appears. Duplicate panels stay hidden from first paint.
+- The old Biome Configuration card on the Webhook tab no longer flashes before the Biome Notifier hub loads.
+- Switching tabs no longer shows the old layout first. The page is tagged on click, so duplicate panels and the old pin button stay hidden.
+- Macro Calibrations page does less DOM watching. Removed burst polling and a duplicate page-sync script.
+- Merchant dialogue and E-key timing are more reliable.
+- Webhook ping validation gives clearer errors for bad user or role IDs.
+- Buttons and cards no longer overlap.
+- Sidebar grouping and window control cleanup no longer stack duplicate DOM observers when the UI reloads.
+- Some card and input borders referenced an undefined color variable and fell back to the text color. They now use the theme border color, so borders look consistent across tabs.
+- Timing and stability fixes across automations.
+- Stopping then starting the macro again now works every time. Stop fully tears down the worker and fishing threads, and start waits for the old run to exit before clearing state, so a quick restart no longer leaves two loops running or kills the new run's fishing worker.
+- Settings and extras sidebar link now opens the real settings page so the Appearance card mounts and stays wired up.
+- Appearance accent, interface scale, and reduce motion controls apply their changes again, persist to config, and restore on the next launch.
+- Theme and accent now apply across the whole UI. The root window background, calibration hub borders, material card icons and active tabs, and the minimize titlebar button were keeping fixed dark or pink colors and ignoring the selected theme. They now use theme tokens, so switching theme or accent recolors every surface, including the Light theme.
+
+## Macro
+- Potion Switching stays off until Auto Potion Craft is on. The UI and macro both ignore the switcher when craft is off.
+- With Auto Potion Craft on, webhook currency screenshots are disabled and the Currency Screenshot calibration section is hidden.
+- While Fishing Mode runs, merchant, quests, potion craft, obby, BR/SC, and biome selector pause. If Auto Potion Craft is also on, crafting takes priority and fishing waits until craft is off.
+- The first time Fishing Mode runs it may download the vision component before starting. This happens once, then it is cached. Without it, fishing uses the NumPy fallback.
+- Auto Merchant detection is faster. Name OCR stops on the first Mari/Jester/Rin match and skips the sleep after the last retry.
+- Auto Merchant calibrations now cover all five shop slots, purchase amount, Set Max, dialogue, open/close, and purchase, each with Mark buttons in the hub. Buy flow clicks the amount field, then Max if calibrated, then purchase.
+- Auto Merchant Set Max is a single shared calibration again. The hub has one Set max Mark button used by every non-Rin merchant, and the buy flow clicks it for Mari and Jester. Rin has no Max button and skips Max entirely. Any older per-merchant Mari/Jester Max calibrations still work as a fallback.
+- The macro runs one UI action per tick on an interval timer with a fixed priority order (buffs, merchant, SC, BR, biome selector, potion, quests, obby), so enabled actions take turns instead of colliding or starving each other. Idle ticks skip work because the config is only re-read when it changes on disk.
+- Starting the macro resets all per-run state and brings up every enabled action from a clean slate. Merchant, quests, potion craft, and obby each run once at start, fishing and the biome watcher come up, and the rest begin on their own timers.
+- Added an in-app installer for the fishing vision component on the Settings and extras page. It shows whether the component is installed, installs it on demand with a progress bar and percent, and verifies the download by checksum before use. If the component is not published yet or the download fails, it says so and fishing keeps working with the built-in fallback. Restart the app after updating so the new installer loads.
+- The app now checks for the optional vision component on boot and installs it in the background if it is missing, so fishing is ready without a manual install. The checksum verification and built-in fallback are unchanged, and a failed or offline check never blocks launch.
+- Added Auto Eden detection, ported from the original Noteab macro. When enabled, it watches the in-game chat for the "Eden has appeared" announcement using OCR (with the same spoof guard against players faking the line and a 40 minute cooldown), then pings your Discord webhook with a chat screenshot. It uses your existing chat OCR calibrations.
+
+## UI
+- Command palette: press Ctrl+K (or Cmd+K) to search every page and quick action (start/stop macro, import config, pin window, open Appearance). Arrow keys move, Enter runs, Esc closes. The toolbar search box now opens it too.
+- Emoji across the app are now vector icons (sidebar nav, card headers, intro, toolbar). Icons are bundled locally and follow the active theme color, so nothing loads from the internet.
+- Reworded some unclear helper text (Roblox username, mouse-action calibration, fishing) to be shorter and plainer.
+- Full custom theme mode: selecting a CSS file in Appearance replaces the whole look (minimal neutral base only). Built-in Pink/Dark/Light apply only when Custom = None; `ui_theme` stays saved as fallback. Expanded `custom-ui.example.css` template documents all UI tokens and surfaces.
+- Custom UI: drop CSS files in `%LOCALAPPDATA%\\Blossom\\themes\\` (CSS only, no HTML or JS). Sanitized loader; APIs return filenames and CSS text only, never config or license data.
+- Removed decorative corner brackets from cards and panels across the app.
+- Three themes in Appearance: Pink (rose on dark), Dark (neutral), and Light, plus Match system which follows Windows light/dark via `prefers-color-scheme`. Choice saves as `ui_theme` in config. The old Macro Theme toolbar picker is gone; custom CSS themes now live in the Appearance tab.
+- Dedicated Appearance tab in the sidebar (App section, near Settings). Theme, accent, scale, window size, and reduce motion live there.
+- Window size is customizable. Edge drag handles resize the native pywebview window; Appearance offers Small, Medium, Large, and Custom presets plus width/height fields. Size persists in config and restores on launch.
+- Appearance tab sections: Theme, Colors, Layout, Window, and Motion, with labeled presets so window size and interface scale are easy to tell apart.
+- Optional accent color override still layers on top of the active theme.
+- Appearance choices apply from local cache on startup before the first paint, then reconcile with saved config when the app bridge is ready.
+- Removed the title bar maximize button. Minimize and close remain. Double-clicking the title bar no longer maximizes.
+- Removed the old status pills strip.
+- Local CSS and JS links no longer add cache-bust `?v=` query strings.
+- Webhook tab now has a Biome Notifier card at the top. It lists every biome with notify toggles, multiple user/role IDs, and per-rare-biome ping mode.
+- Biome Notifier rare-biome note now sits in a footnote below the table. It no longer overlaps biomes like SAND STORM or HELL on shorter windows.
+- Update download now shows a progress screen with a filling bar, percent, and downloaded/total size. If the server does not report a size it shows an animated bar, then an Installing state before the restart. A failed download shows a message with Retry and Close instead of hanging.
+- Update available now shows as a corner popup with Update, Dismiss, and a corner close button. Update starts the download progress screen. Dismiss or close hides it for now without turning updates off, and it reappears for a newer version or on the next launch. Startup and the periodic 6 hour release scan both drive this popup.
+- Biome Selector is marked Broken / W.I.P. and its toggle is disabled. The card shows a warning that the automation is unfinished and unreliable, the setup intro labels it the same way, and the active modules list reads "Biome Selector (Broken / WIP)". Leave it off until it is fixed.
+
+## Discord
+- Biome webhooks support multiple user IDs and role IDs per biome. Legacy single `id`/`type` entries migrate on save.
+- GLITCHED, DREAMSPACE, and CYBERSPACE can ping @everyone only, specific users/roles only, or both. Set a global default or a per-biome override on the Webhook tab.
+- When Auto Merchant OCR finds Mari, Jester, or Rin, a merchant-found embed is sent before the shop opens. Per-merchant pings use your existing toggles and user IDs.
+- After the shop opens, an optional shop screenshot embed is separate from the found alert and currency screenshots. Set merchant_shop_webhook to false to disable shop screenshots only.
+- Beta key bot: `/getkey`, `/resethwid`, `/download`, and `/downloadbeta` register globally with `REGISTER_GLOBAL=true`, so they work in DMs and your server. Download commands reply with embeds showing version, channel, file size, and a GitHub link.
+- Beta key bot: `/download` and `/downloadbeta` list the three newest versions with a download link, file size, and publish date. Pass the `version` option to grab an older build.
+- Beta key bot owner admin uses flat slash commands (`/genkey`, `/revoke`, `/extend`, `/lookup`, `/listkeys`, and others) plus `$` prefix aliases. The old `/blossomadmin` group is removed. Only the owner can run them. Enable Message Content Intent for `$` commands and set `DISCORD_OWNER_ID` in the bot `.env`.
+- Beta key bot no longer brokers runtime dependencies. The `/download` and `/downloadbeta` lists hide the internal `runtime-deps` housekeeping release, so only real app versions show up. The app installs the optional vision component itself on boot.
+- Beta 2.1.0-beta.4.1 — download commands list the three newest builds; use the `version` option for older releases.
+
+## Licensing & updates
+- Activation screen on first launch. Paste the key from Discord `/getkey`.
+- Keys stay on one device. Use `/resethwid` in Discord if you switch machines.
+- Built-in update check. Your build only offers installs from its own release track.
+- Normal updates still swap the exe in place and restart. A release can be marked reinstall-required by adding a `[reinstall]` token or a `reinstall: true` line to its GitHub release notes. Those builds still download with the progress bar, then open the file location and ask you to run the installer instead of swapping automatically.
+- Update check now reads the version from the release exe name instead of the release title, so an update is still offered when the GitHub release was published without a clean version string in its title.
+- Update check retries a few times with a short backoff, re-checks every 6 hours while the app stays open, and quietly reports when it cannot reach GitHub instead of failing silently.
+- Beta builds show a beta version label in the sidebar.
+- Stable downloads use the `MaxxWasHere/blossom` GitHub repo. Beta stays on `blossombeta`.
+- Timed keys now start counting from your first activation, not from when the key was generated, so an unused key never loses time before you claim it.
+- Keys that are never activated are removed automatically after a grace period, so stale unclaimed keys no longer pile up.
+
+# Blossom 2.0.0
+
+## Overview
+- Major rebuild of the Noteab / Coteab macro for Sol's RNG: new Blossom UI, rewritten automations, and the same core goals (biomes, merchants, potions, webhooks).
+- Side panels show live session stats and quick start/stop without digging through every tab.
+- First-run setup walks you through theme, webhooks, Roblox settings, and which automations to enable.
+
+## New
+- Auto Merchant — OCR detects Mari, Jester, or Rin on screen, teleports when configured, talks, and buys from your lists.
+- Biome Randomizer — uses your Biome Randomizer items on a schedule you set.
+- Strange Controller — auto-uses Strange Controllers on a schedule.
+- Glitched buffs — when you roll GLITCHED, can auto-pop the buff potion you configured.
+- One scheduler coordinates merchant, quests, and potions so they do not fight each other.
+- Potion crafting — drag boxes over craft buttons in Roblox, Add Everything to fill ingredients, Auto Craft waits for the green craft indicator.
+
+## UI
+- Redesigned interface with a tighter layout, updated cards, and smoother transitions.
+- Move the window by dragging the custom title bar.
+- Theme picker with live preview; your choice is saved for next time.
+- Always-on-top option in Settings.
+
+## Discord
+- Biome hits send colored embeds with thumbnails and per-biome colors.
+- Per-biome ping toggles for other biomes; user and role IDs work as intended.
+- Merchant and status messages include author, footer, and timestamp.
+
+## Session
+- Side panel shows macro status, uptime, and which modules are running.
+
+# About Blossom
+
+## Fork
+- Blossom is an independent fork of Noteab / Coteab — maintained separately with its own UI and features.
+- Source is open under Apache 2.0 (see LICENSE.txt in the repo).
+
+# Licensing (Apache 2.0)
+
+You may use, modify, and share the code if you keep the license and attribution.
+
+## You must
+- Ship the Apache 2.0 license with distributions
+- Note which files you changed
+- Keep existing copyright and NOTICE text
+
+## You cannot
+- Strip the original authors' license or attribution
+- Hide that you modified the project
