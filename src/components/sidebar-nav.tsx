@@ -33,7 +33,7 @@ export function SidebarNav() {
     (_context, contextSafe) => {
       const nav = navRef.current;
       const rail = railRef.current;
-      if (!nav || !rail) return;
+      if (!nav || !rail || !contextSafe) return;
       const active = nav.querySelector<HTMLElement>(".blsm-sidebar-item.is-active");
 
       const place = contextSafe((animate: boolean) => {
