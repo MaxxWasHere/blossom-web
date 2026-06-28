@@ -84,7 +84,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="pink"
-          enableSystem
           themes={THEME_IDS}
           disableTransitionOnChange
           storageKey="blossom-web-theme"
