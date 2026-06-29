@@ -1,6 +1,6 @@
 {
   "name": "blossom-web",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "private": true,
   "description": "Official website for Blossom - a Roblox macro. Apache 2.0.",
   "scripts": {

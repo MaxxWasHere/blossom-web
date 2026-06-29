@@ -67,7 +67,7 @@ export function MockAppWindow({ id = "mock-app" }: { id?: string }) {
             />
             <div>
               <h1 style={{ fontSize: 15 }}>Blossom</h1>
-              <div className="version">v2.3.6</div>
+              <div className="version">v2.3.7</div>
             </div>
           </div>
           <nav className="blsm-sidebar-nav" style={{ padding: "10px 8px", gap: 12 }}>

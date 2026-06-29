@@ -8,7 +8,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-export const APP_VERSION = "2.3.6";
+export const APP_VERSION = "2.3.7";
 export const SITE_NAME = "Blossom";
 export const SITE_TITLE = "Blossom - Roblox macro";
 export const TAGLINE =

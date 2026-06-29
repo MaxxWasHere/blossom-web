@@ -68,7 +68,7 @@ of truth: `assets/noticetabcontents.txt` in the app repo. It is parsed at build 
 that file from the app repo.
 
 Current version is read from `src/lib/site.ts` (`APP_VERSION`) and mirrored from the
-app's `src/blossom_build_info.py` (`APP_VERSION = "2.3.6"`). Branding assets
+app's `src/blossom_build_info.py` (`APP_VERSION = "2.3.7"`). Branding assets
 (`public/blossom.png`, `public/favicon.ico`, `public/og.png`) are also copied from the
 app repo.
 
